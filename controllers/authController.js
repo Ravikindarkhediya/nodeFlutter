@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 
+// todo: Login
 exports.loginPost = async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -16,15 +17,16 @@ exports.loginPost = async (req, res) => {
     }
 };
 
+// todo: Register
 exports.register = async (req, res) => {
     const { email, password } = req.body;
     try {
-        console.log('📩 Registration payload:', req.body);
+        console.log(' Registration payload:', req.body);
 
         await User.create({ email, password });
         res.status(201).json({ message: 'User created' });
     } catch (err) {
-        console.error('🔥 Registration Error:', err.message);
+        console.error(' Registration Error:', err.message);
         if (err.code === 11000) {
             return res.status(400).json({ error: 'Email already exists' });
         }
