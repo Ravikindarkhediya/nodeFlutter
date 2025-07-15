@@ -19,10 +19,15 @@ exports.loginPost = async (req, res) => {
 exports.register = async (req, res) => {
     const { email, password } = req.body;
     try {
-        const hashed = await bcrypt.hash(password, 10);
-        await User.create({ email, password: hashed });
+        console.log('📩 Registration payload:', req.body);
+
+        await User.create({ email, password });
         res.status(201).json({ message: 'User created' });
     } catch (err) {
+        console.error('🔥 Registration Error:', err.message);
+        if (err.code === 11000) {
+            return res.status(400).json({ error: 'Email already exists' });
+        }
         res.status(500).json({ error: 'Registration failed' });
     }
 };
